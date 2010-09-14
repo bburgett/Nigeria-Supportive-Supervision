@@ -16,72 +16,9 @@ ActiveRecord::Schema.define(:version => 20100902141531) do
     t.timestamp "updated_at"
   end
 
-  create_table "activities", :force => true do |t|
-    t.string    "name"
-    t.string    "beneficiary"
-    t.string    "target"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.integer   "provider_id"
-    t.integer   "other_cost_type_id"
-    t.text      "description"
-    t.string    "type"
-    t.decimal   "budget"
-    t.decimal   "spend_q1"
-    t.decimal   "spend_q2"
-    t.decimal   "spend_q3"
-    t.decimal   "spend_q4"
-    t.date      "start"
-    t.date      "end"
-    t.decimal   "spend"
-    t.text      "text_for_provider"
-    t.text      "text_for_targets"
-    t.text      "text_for_beneficiaries"
-    t.decimal   "spend_q4_prev"
-    t.integer   "data_response_id"
-    t.integer   "activity_id"
-    t.decimal   "budget_percentage"
-    t.decimal   "spend_percentage"
-    t.boolean   "approved"
-  end
-
-  create_table "activities_beneficiaries", :id => false, :force => true do |t|
-    t.integer "activity_id"
-    t.integer "beneficiary_id"
-  end
-
-  create_table "activities_indicators", :id => false, :force => true do |t|
-    t.integer "activity_id"
-    t.integer "indicator_id"
-  end
-
-  create_table "activities_locations", :id => false, :force => true do |t|
-    t.integer "activity_id"
-    t.integer "location_id"
-  end
-
-  create_table "activities_organizations", :id => false, :force => true do |t|
-    t.integer "activity_id"
-    t.integer "organization_id"
-  end
-
-  create_table "activities_projects", :id => false, :force => true do |t|
-    t.integer "project_id"
-    t.integer "activity_id"
-  end
-
   create_table "assignments", :force => true do |t|
     t.integer "user_id"
     t.integer "role_id"
-  end
-
-  create_table "code_assignments", :force => true do |t|
-    t.integer "activity_id"
-    t.integer "code_id"
-    t.string  "code_type"
-    t.decimal "amount"
-    t.string  "type"
-    t.decimal "percentage"
   end
 
   create_table "codes", :force => true do |t|
@@ -161,47 +98,11 @@ ActiveRecord::Schema.define(:version => 20100902141531) do
     t.timestamp "updated_at"
   end
 
-  create_table "funding_flows", :force => true do |t|
-    t.integer   "organization_id_from"
-    t.integer   "organization_id_to"
-    t.integer   "project_id"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.decimal   "budget"
-    t.decimal   "spend_q1"
-    t.decimal   "spend_q2"
-    t.decimal   "spend_q3"
-    t.decimal   "spend_q4"
-    t.text      "organization_text"
-    t.integer   "self_provider_flag",   :default => 0
-    t.decimal   "spend"
-    t.decimal   "spend_q4_prev"
-    t.integer   "data_response_id"
-  end
-
   create_table "help_requests", :force => true do |t|
     t.string    "email"
     t.text      "message"
     t.timestamp "created_at"
     t.timestamp "updated_at"
-  end
-
-  create_table "indicators", :force => true do |t|
-    t.string    "name"
-    t.text      "description"
-    t.string    "source"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-  end
-
-  create_table "line_items", :force => true do |t|
-    t.text      "description"
-    t.integer   "activity_id"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.integer   "activity_cost_category_id"
-    t.decimal   "budget"
-    t.decimal   "spend"
   end
 
   create_table "locations", :force => true do |t|
@@ -214,11 +115,6 @@ ActiveRecord::Schema.define(:version => 20100902141531) do
   create_table "locations_organizations", :id => false, :force => true do |t|
     t.integer "location_id"
     t.integer "organization_id"
-  end
-
-  create_table "locations_projects", :id => false, :force => true do |t|
-    t.integer "location_id"
-    t.integer "project_id"
   end
 
   create_table "model_helps", :force => true do |t|
@@ -235,25 +131,6 @@ ActiveRecord::Schema.define(:version => 20100902141531) do
     t.timestamp "created_at"
     t.timestamp "updated_at"
     t.string    "raw_type"
-  end
-
-  create_table "projects", :force => true do |t|
-    t.string    "name"
-    t.text      "description"
-    t.date      "start_date"
-    t.date      "end_date"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.decimal   "budget"
-    t.decimal   "spend"
-    t.decimal   "entire_budget"
-    t.string    "currency"
-    t.decimal   "spend_q1"
-    t.decimal   "spend_q2"
-    t.decimal   "spend_q3"
-    t.decimal   "spend_q4"
-    t.decimal   "spend_q4_prev"
-    t.integer   "data_response_id"
   end
 
   create_table "sessions", :force => true do |t|
