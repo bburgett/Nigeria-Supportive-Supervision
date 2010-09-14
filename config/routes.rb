@@ -7,13 +7,10 @@ ActionController::Routing::Routes.draw do |map|
   map.data_requests 'data_requests', :controller => 'data_requests', :action => :index #until we flesh out this model
 
   # routes for CSV uploading for various models
-  %w[activities funding_flows projects providers funding_sources model_helps comments other_costs organizations users sub_activities].each do |model|
+  %w[model_helps comments organizations users].each do |model|
     map.create_from_file model+"/create_from_file", :controller => model, :action => "create_from_file"
     map.create_from_file_form model+"/create_from_file_form", :controller => model, :action => "create_from_file_form"
   end
-
-  map.funding_sources_data_entry "funding_sources",
-    :controller => 'funding_sources', :action => 'index'
 
   map.providers_data_entry "providers",
     :controller => 'providers', :action => 'index'
@@ -26,53 +23,10 @@ ActionController::Routing::Routes.draw do |map|
     :collection => {:browse => :get},
     :member => {:select => :post}, :active_scaffold => true
 
-  map.resources :activities,
-                :member => { :approve => :post },
-                :active_scaffold => true        do |activity|
-
-    activity.resource :budget, :path_prefix => '/activities/:activity_id/classification',
-                                :controller => :budget_classification,
-                                :only => [ :show, :update ]
-    activity.resource :expenditure, :path_prefix => '/activities/:activity_id/classification',
-                                      :controller => :expenditure_classification,
-                                      :only => [ :show, :update ]
-     #TODO : refactor as above
-    activity.resource :coding,  :controller => :code_assignments,
-                                :only => [:index], #no restful routes k thx
-                                :member => {  :budget                      => :get,
-                                              :budget_districts            => :get,
-                                              :budget_cost_categories      => :get,
-                                              :expenditure                 => :get,
-                                              :expenditure_districts            => :get,
-                                              :expenditure_cost_categories => :get
-                                            }
-
-    map.resources :sub_activities, :active_scaffold => true
-
-    activity.update_coding_budget 'update_coding_budget', :controller => :code_assignments, :action => :update_budget
-    activity.update_coding_expenditure 'update_coding_expenditure', :controller => :code_assignments, :action => :update_expenditure
-
-    activity.update_coding_budget_cost_categories 'update_coding_budget_cost_categories', :controller => :code_assignments, :action => :update_budget_cost_categories
-    activity.update_coding_expenditure_cost_categories 'update_coding_expenditure_cost_categories', :controller => :code_assignments, :action => :update_expenditure_cost_categories
-
-    activity.update_coding_budget_districts 'update_coding_budget_districts', :controller => :code_assignments, :action => :update_budget_districts
-    activity.update_coding_expenditure_districts 'update_coding_expenditure_districts', :controller => :code_assignments, :action => :update_expenditure_districts
-  end
-
-  # AS redirect helpers
-  map.popup_coding 'popup_coding', :controller => :activities, :action => :popup_coding
-  map.popup_other_cost_coding "popup_other_cost_coding", :controller => 'other_costs', :action => 'popup_coding'
-
-  map.resources :indicators, :active_scaffold => true
-  #map.resources :line_items, :active_scaffold => true
   map.resources :comments, :active_scaffold => true
   map.resources :field_helps, :active_scaffold => true
   map.resources :model_helps, :active_scaffold => true
-  map.resources :funding_flows, :active_scaffold => true
   map.resources :codes, :active_scaffold => true
-  #map.resources :activity_cost_categories, :active_scaffold => true
-  map.resources :other_costs, :active_scaffold => true
-  #map.resources :other_cost_types, :active_scaffold => true
 
   map.resources :users, :active_scaffold => true
   map.resource :user_session
@@ -90,12 +44,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   #reports
-  map.activities_by_district 'activities_by_district', :controller => 'reports', :action => 'activities_by_district'
-  map.activities_by_district_sub_activities 'activities_by_district_sub_activities', :controller => 'reports', :action => 'activities_by_district_sub_activities'
-  map.activities_by_budget_coding 'activities_by_budget_coding', :controller => 'reports', :action => 'activities_by_budget_coding'
-  map.activities_by_budget_cost_cat 'activities_by_budget_cost_cat', :controller => 'reports', :action => 'activities_by_budget_cost_cat'
-  map.activities_by_expenditure_coding 'activities_by_expenditure_coding', :controller => 'reports', :action => 'activities_by_expenditure_coding'
-  map.activities_by_expenditure_cost_cat 'activities_by_expenditure_cost_cat', :controller => 'reports', :action => 'activities_by_expenditure_cost_cat'
+  #map.activities_by_district 'activities_by_district', :controller => 'reports', :action => 'activities_by_district'
 
   map.static_page ':page',
                   :controller => 'static_page',
